@@ -1,4 +1,4 @@
-name: Java CI with JUnit 5
+name: Java CI
 
 on:
   push:
