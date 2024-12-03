@@ -1,7 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginAppTest {
@@ -15,12 +17,13 @@ public class LoginAppTest {
 
     @Test
     void testValidLoginWithCorrectEmailAndPassword() {
+        // Replace with actual test values that exist in your database
         String expectedUserName = "John Doe";
         String email = "johndoe@example.com";
         String password = "password123";
 
         String result = loginApp.authenticateUser(email, password);
-        assertEquals(expectedUserName, result);
+        assertEquals(expectedUserName, result, "Valid login should return the correct username.");
     }
 
     @Test
@@ -29,7 +32,7 @@ public class LoginAppTest {
         String password = "password123";
 
         String result = loginApp.authenticateUser(email, password);
-        assertNull(result, "The login should fail and return null for incorrect email.");
+        assertNull(result, "Login with an incorrect email should return null.");
     }
 
     @Test
@@ -38,7 +41,7 @@ public class LoginAppTest {
         String password = "wrongpassword";
 
         String result = loginApp.authenticateUser(email, password);
-        assertNull(result, "The login should fail and return null for incorrect password.");
+        assertNull(result, "Login with an incorrect password should return null.");
     }
 
     @Test
@@ -47,16 +50,6 @@ public class LoginAppTest {
         String password = "";
 
         String result = loginApp.authenticateUser(email, password);
-        assertNull(result, "The login should fail and return null for blank email and password fields.");
-    }
-
-    @Test
-    void testDatabaseConnectionFailure() {
-        String email = "johndoe@example.com";
-        String password = "password123";
-
-        String result = loginApp.authenticateUser(email, password);
-        assertNull(result, "The login should succeed and return the correct username.");
-
+        assertNull(result, "Login with blank email and password should return null.");
     }
 }

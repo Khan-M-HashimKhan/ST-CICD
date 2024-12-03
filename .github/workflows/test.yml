@@ -33,4 +33,5 @@ jobs:
 
       # Step 4: Run tests
       - name: Run tests
-        run: java -cp out org.junit.runner.JUnitCore LoginAppTest
+      - run: java -cp "out:lib/junit-jupiter-api-5.9.3.jar:lib/junit-jupiter-engine-5.9.3.jar" org.junit.platform.console.ConsoleLauncher --scan-classpath
+
