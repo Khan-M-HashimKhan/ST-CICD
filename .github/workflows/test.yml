@@ -1,6 +1,5 @@
-name: Java CI - Compile and Test
+name: Java CI with JUnit 5
 
-# Trigger the workflow on pushes and pull requests
 on:
   push:
     branches:
@@ -14,24 +13,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Check out the repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Check out the repository
+        uses: actions/checkout@v2
 
-      # Step 2: Set up Java environment
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
           java-version: '17'
 
-      # Step 3: Compile Java files
-      - name: Compile Java files
-        run: javac -d out $(find ./src -name "*.java")
+      - name: Download JUnit 5 dependencies
+        run: |
+          wget https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-api/5.9.3/junit-jupiter-api-5.9.3.jar -P lib/
+          wget https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-engine/5.9.3/junit-jupiter-engine-5.9.3.jar -P lib/
+          wget https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.3/junit-platform-console-standalone-1.9.3.jar -P lib/
 
-      # Step 4: Run tests
-      - name: Run tests
-      - run: java -cp "out:lib/junit-jupiter-api-5.9.3.jar:lib/junit-jupiter-engine-5.9.3.jar" org.junit.platform.console.ConsoleLauncher --scan-classpath
-
+      - name: Compile and run tests
+        run: |
+          javac -cp "lib/*:LoginApp.java:LoginAppTest.java"
+          java -cp "lib/*:." org.junit.platform.console.ConsoleLauncher --scan-classpath
